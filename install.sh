@@ -42,7 +42,7 @@ sudo chmod +x github-secret
 mkdir --parents ~/.config/github-secret
 cd ~/.config/github-secret
 download raw.githubusercontent.com/jeromedecoster/github-secret/master/tpl/README.md.tpl nosudo
-download raw.githubusercontent.com/jeromedecoster/github-secret/master/tpl/script.sh.tpl nosudo
+download raw.githubusercontent.com/jeromedecoster/github-secret/master/tpl/install.sh.tpl nosudo
 
 info installed github-secret
 exit 0
