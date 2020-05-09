@@ -1,6 +1,6 @@
 URL=https://raw.githubusercontent.com/jeromedecoster/{{REPOSITORY}}/master
 
-log() { echo -e "\e[0;4m${1}\e[0m ${@:2}"; }
+log()   { echo -e "\e[30;47m ${1^^} \e[0m ${@:2}"; }
 info()  { echo -e "\e[48;5;28m ${1^^} \e[0m ${@:2}"; }
 warn()  { echo -e "\e[48;5;202m ${1^^} \e[0m ${@:2}" >&2; }
 error() { echo -e "\e[48;5;196m ${1^^} \e[0m ${@:2}" >&2; }
@@ -8,6 +8,7 @@ error() { echo -e "\e[48;5;196m ${1^^} \e[0m ${@:2}" >&2; }
 CWD=$(pwd)
 TEMP=$(mktemp --directory)
 
+info decrypt secret
 cd $TEMP
 
 log download $URL/secret
