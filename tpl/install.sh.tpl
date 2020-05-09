@@ -1,6 +1,9 @@
 URL=https://raw.githubusercontent.com/jeromedecoster/{{REPOSITORY}}/master
 
 log() { echo -e "\e[0;4m${1}\e[0m ${@:2}"; }
+info()  { echo -e "\e[48;5;28m ${1^^} \e[0m ${@:2}"; }
+warn()  { echo -e "\e[48;5;202m ${1^^} \e[0m ${@:2}" >&2; }
+error() { echo -e "\e[48;5;196m ${1^^} \e[0m ${@:2}" >&2; }
 
 CWD=$(pwd)
 TEMP=$(mktemp --directory)
@@ -21,8 +24,14 @@ else
 fi
 
 log openssl decryption
-openssl aes-256-cbc -d -a -pbkdf2 -iter 42 -in secret -out archive.zip
-[[ $? == 1 ]] && { log fail openssl decryption error; exit; }
+openssl aes-256-cbc \
+    -d \
+    -a \
+    -pbkdf2 \
+    -iter 42 \
+    -in secret \
+    -out archive.zip
+[[ $? == 1 ]] && { error fail openssl decryption error; exit; }
 
 log unzip archive.zip
 unzip archive.zip
@@ -37,12 +46,12 @@ CONTENT=$(unzip -l archive.zip \
 # check if $CWD is writable by the user
 if [[ -z $(sudo --user $(whoami) --set-home bash -c "[[ -w $CWD ]] && echo 1;") ]]
 then
-    log warn sudo access is required
+    warn warn sudo access is required
     sudo mv $CONTENT $CWD
 else
     mv $CONTENT $CWD
 fi
 
-log created $CONTENT
+info decrypted $CONTENT
 
 rm --force --recursive $TEMP
